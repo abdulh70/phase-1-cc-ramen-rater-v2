@@ -4,28 +4,28 @@ function displayRamens() {
   then((data)=>renderRamen(data))
   };
   function renderRamen(ramen) {
-    const ramenImg = document.createElement('img'); 
-    ramenImg.src = ramen.image;
-    ramenImg.alt = ramen.name;
-    ramenImg.innerHTML=`<img src="${ramen}.jpg">`
-    ramenImg.addEventListener('click', () => handleClick(ramen))
+    const ramenImgg = document.createElement('img'); 
+    ramenImgg.src = ramen.image;
+    ramenImgg.alt = ramen.name;
+    ramenImgg.innerHTML=`<img src="${ramen}.jpg">`
+    ramenImgg.addEventListener('click', () => handleClick(ramen))
   
-   const ramenMenu = document.querySelector("#ramen-menu");
-   ramenMenu.append(ramenImg)
+   const ramenMenuu = document.querySelector("#ramen-menu");
+   ramenMenuu.append(ramenImg)
   
   
   }
-  renderRamen(newRamen)
+  renderRamen(newzRamen)
   
   const handleClick = (ramen) => {
     const detailImage = document.querySelector("#ramen-detail img"); 
     detailImage.src = ramen.image;
   
-    const name = document.querySelector("#ramen-detail h2");
-    name.textContent = ramen.name;
+    const namez = document.querySelector("#ramen-detail h2");
+    namez.textContent = ramen.name;
   
-    const restaurantName = document.querySelector("#ramen-detail h3");
-    restaurantName.textContent = ramen.restaurant;
+    const resttName = document.querySelector("#ramen-detail h3");
+    resttName.textContent = ramen.restaurant;
   
     const rating = document.querySelector("#rating-display");
     rating.textContent = ramen.rating;
@@ -35,30 +35,30 @@ function displayRamens() {
   }; 
   
   const addSubmitListener = () => {
-    const ramenForm = document.querySelector("#new-ramen");
+    const ramenFormm = document.querySelector("#new-ramen");
   
     const handleSubmit = (e) => {
       e.preventDefault();
   
-       const name = document.querySelector("#new-name").value
-       const restaurant = document.querySelector("#new-restaurant").value
-       const image = document.querySelector("#new-image").value
-       const rating = document.querySelector("#new-rating").value 
-       const comment = document.querySelector("#new-comment").value
+       const newname = document.querySelector("#new-name").value
+       const newrestaurant = document.querySelector("#new-restaurant").value
+       const newimage = document.querySelector("#new-image").value
+       const newrating = document.querySelector("#new-rating").value 
+       const newcomment = document.querySelector("#new-comment").value
   
        const newzRamen = {
-        name,
-        restaurant,
-        image,
-        rating,
-        comment
+        newnamename,
+        newrestaurant,
+        newimage,
+        newrating,
+        newcomment
        }
   
        renderRamen(newzRamen)
   
-       ramenForm.reset()
+       ramenFormm.reset()
     }
-    ramenForm.addEventListener("submit", handleSubmit)
+    ramenFormm.addEventListener("submit", handleSubmit)
   }
   
   const main = () => {
