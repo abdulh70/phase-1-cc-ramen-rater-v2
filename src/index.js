@@ -15,7 +15,7 @@ main ()
 
 
 function displayRamens () {
-  fetch('http://localhost:3000/ramens')
+  fetch('https://phase-1-cc-ramen-rater-v2-bw9q.onrender.com/ramens')
   .then(resp => resp.json())
   .then(function(data){
     let imageSection = document.getElementById('ramen-menu')
@@ -42,7 +42,7 @@ function handleClick () {
   document.addEventListener('click', function(e) {
     let select = e.target.closest('img')
     newArray.push(select.id)
-    fetch(`http://localhost:3000/ramens/${select.id}`)
+    fetch(`https://phase-1-cc-ramen-rater-v2-bw9q.onrender.com/${select.id}`)
     .then(resp => resp.json())
     .then(function(data) {
 
@@ -77,7 +77,7 @@ function addSubmitListener () {
         "comment": `${e.target[4].value}`
       })
     }
-    fetch('http://localhost:3000/ramens', configurationObject)
+    fetch('https://phase-1-cc-ramen-rater-v2-bw9q.onrender.com/ramens', configurationObject)
     .then(resp => resp.json())
   })
 }
@@ -101,7 +101,7 @@ function updateRamen () {
         "comment": `${e.target[1].value}`
       })
     }
-    fetch(`http://localhost:3000/ramens/${newArray[(newArray.length)-1]}`, configurationObject2)
+    fetch(`https://phase-1-cc-ramen-rater-v2-bw9q.onrender.com/ramens/${newArray[(newArray.length)-1]}`, configurationObject2)
     .then(resp => resp.json())
   })
   })
@@ -114,7 +114,7 @@ function deleteRamen () {
   document.addEventListener('DOMContentLoaded', function () {
   let deleteButton = document.getElementById('delete-button')
   deleteButton.addEventListener('click', function() {
-    fetch(`http://localhost:3000/ramens/${newArray[(newArray.length)-1]}`,{
+    fetch(`https://phase-1-cc-ramen-rater-v2-bw9q.onrender.com/${newArray[(newArray.length)-1]}`,{
       method: 'DELETE',
     })
     .then(resp => resp.json())
