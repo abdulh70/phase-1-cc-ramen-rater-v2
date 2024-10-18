@@ -1,76 +1,134 @@
 // index.js
-function displayRamens() {
-  fetch("http://localhost:3000/students").then((response)=>response.json()).
-  then((data)=>renderRamen(data))
-  };
-  function renderRamen(ramen) {
-    const ramenImgg = document.createElement('img'); 
-    ramenImgg.src = ramen.image;
-    ramenImgg.alt = ramen.name;
-    ramenImgg.innerHTML=`<img src="${ramen}.jpg">`
-    ramenImgg.addEventListener('click', () => handleClick(ramen))
-  
-   const ramenMenuu = document.querySelector("#ramen-menu");
-   ramenMenuu.append(ramenImg)
-  
-  
-  }
-  renderRamen(newzRamen)
-  
-  const handleClick = (ramen) => {
-    const detailImage = document.querySelector("#ramen-detail img"); 
-    detailImage.src = ramen.image;
-  
-    const namez = document.querySelector("#ramen-detail h2");
-    namez.textContent = ramen.name;
-  
-    const resttName = document.querySelector("#ramen-detail h3");
-    resttName.textContent = ramen.restaurant;
-  
-    const rating = document.querySelector("#rating-display");
-    rating.textContent = ramen.rating;
-  
-    const comment = document.querySelector("#comment-display");
-    comment.textContent = ramen.comment;
-  }; 
-  
-  const addSubmitListener = () => {
-    const ramenFormm = document.querySelector("#new-ramen");
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-  
-       const newname = document.querySelector("#new-name").value
-       const newrestaurant = document.querySelector("#new-restaurant").value
-       const newimage = document.querySelector("#new-image").value
-       const newrating = document.querySelector("#new-rating").value 
-       const newcomment = document.querySelector("#new-comment").value
-  
-       const newzRamen = {
-        newnamename,
-        newrestaurant,
-        newimage,
-        newrating,
-        newcomment
-       }
-  
-       renderRamen(newzRamen)
-  
-       ramenFormm.reset()
+
+let mainImage = document.querySelector('img')
+let foodName = document.querySelector('h2')
+let restaurant = document.querySelector('#ramen-detail > .restaurant')
+let rating = document.getElementById('rating-display')
+let comment = document.getElementById('comment-display')
+
+
+function main () {
+  document.addEventListener('DOMContentLoaded', displayRamens)
+  document.addEventListener('DOMContentLoaded', addSubmitListener)
+}
+main ()
+
+
+function displayRamens () {
+  fetch('http://localhost:3000/ramens')
+  .then(resp => resp.json())
+  .then(function(data){
+    let imageSection = document.getElementById('ramen-menu')
+    data.forEach(function(object){
+      let imageTag = document.createElement('img')
+      imageTag.setAttribute('src',`${object.image}`)
+      imageTag.setAttribute('id',`${object.id}`)
+      imageSection.append(imageTag)
+    })
+
+    mainImage.src = `${data[0].image}`
+    foodName.textContent = `${data[0].name}`
+    restaurant.textContent = `${data[0].restaurant}`
+    rating.textContent = `${data[0].rating}`
+    comment.textContent = `${data[0].comment}`
+  })
+}
+
+
+let newArray = []
+
+function handleClick () {
+  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('click', function(e) {
+    let select = e.target.closest('img')
+    newArray.push(select.id)
+    fetch(`http://localhost:3000/ramens/${select.id}`)
+    .then(resp => resp.json())
+    .then(function(data) {
+
+      mainImage.src = `${data.image}`
+      foodName.textContent = `${data.name}`
+      restaurant.textContent = `${data.restaurant}`
+      rating.textContent = `${data.rating}`
+      comment.textContent = `${data.comment}`
+    })
+  })
+  })
+}
+
+handleClick()
+
+
+function addSubmitListener () {
+  let newRamen = document.getElementById('new-ramen')
+  newRamen.addEventListener('submit', function(e) {
+    e.preventDefault()
+    const configurationObject = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        "name": `${e.target[0].value}`,
+        "restaurant": `${e.target[1].value}`,
+        "image": `${e.target[2].value}`,
+        "rating": `${e.target[3].value}`,
+        "comment": `${e.target[4].value}`
+      })
     }
-    ramenFormm.addEventListener("submit", handleSubmit)
-  }
-  
-  const main = () => {
-   displayRamens()
-  };
-  
-  main();
-  
-  // Export functions for testing
-  export {
-    displayRamens,
-    addSubmitListener,
-    handleClick,
-    main,
-  };
+    fetch('http://localhost:3000/ramens', configurationObject)
+    .then(resp => resp.json())
+  })
+}
+
+
+function updateRamen () {
+  document.addEventListener('DOMContentLoaded', function() {
+  let editRamen = document.getElementById('edit-ramen')
+  editRamen.addEventListener('submit',function(e){
+    e.preventDefault()
+    rating.textContent = e.target[0].value
+    comment.textContent = e.target[1].value
+    
+    const configurationObject2 = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "rating": `${e.target[0].value}`,
+        "comment": `${e.target[1].value}`
+      })
+    }
+    fetch(`http://localhost:3000/ramens/${newArray[(newArray.length)-1]}`, configurationObject2)
+    .then(resp => resp.json())
+  })
+  })
+}
+
+updateRamen()
+
+
+function deleteRamen () {
+  document.addEventListener('DOMContentLoaded', function () {
+  let deleteButton = document.getElementById('delete-button')
+  deleteButton.addEventListener('click', function() {
+    fetch(`http://localhost:3000/ramens/${newArray[(newArray.length)-1]}`,{
+      method: 'DELETE',
+    })
+    .then(resp => resp.json())
+  })
+})
+}
+
+deleteRamen()
+
+
+// Export functions for testing
+export {
+  displayRamens,
+  addSubmitListener,
+  handleClick,
+  main,
+};
